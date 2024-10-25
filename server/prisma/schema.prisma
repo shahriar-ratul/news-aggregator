@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // postgresql mysql
+  url      = env("DATABASE_URL")
+}
+
+
+model Url {
+  id        String @id @default(cuid())
+  shortUrl  String @unique
+  slug      String @unique
+  status    String @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Feeds Feeds[]
+
+  MetaData MetaData[]
+}
+
+
+model MetaData {
+  id        String @id @default(cuid())
+  urlId     String
+  url       Url    @relation(fields: [urlId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+} 
+
+model Feeds {
+  id        String @id @default(cuid())
+  urlId     String
+  url       Url    @relation(fields: [urlId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
