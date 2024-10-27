@@ -3,7 +3,7 @@ import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { PageDto } from '../dto';
 
 export const ApiPaginatedResponse = <TModel extends Type<any>>(
-    model: TModel
+    model: TModel,
 ) => {
     return applyDecorators(
         ApiExtraModels(PageDto),
@@ -22,6 +22,6 @@ export const ApiPaginatedResponse = <TModel extends Type<any>>(
                     },
                 ],
             },
-        })
+        }),
     );
 };
