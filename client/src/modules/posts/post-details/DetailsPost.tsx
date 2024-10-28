@@ -9,10 +9,15 @@ import React, { useState } from "react";
 
 export default function DetailsPost({ id }: any) {
   const [item, SetItem] = useState<PostModel | null>(null);
-  const fetchData = async () => {
-    const { data } = await axios.get(`/api/posts/${id}`);
-    return data;
-  };
+    const fetchData = async () => {
+      // base url
+      const baseUrl =
+        process.env.NEXT_PUBLIC_BACKEND_URL || "http://65.0.204.1:4000";
+
+      axios.defaults.baseURL = baseUrl;
+      const { data } = await axios.get(`/api/posts/${id}`);
+      return data;
+    };
 
   const { isLoading, isError, error, isFetching } = useQuery<boolean, any>({
     queryKey: ["posts-list", id],
