@@ -27,6 +27,7 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-news_api}?schema=public
     ports:
       - "${API_PORT:-4000}:4000"
+    command: npx prisma migrate deploy
     networks:
       - app-network
       - postgres-network
