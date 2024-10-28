@@ -11,10 +11,15 @@ COPY pnpm-lock.yaml ./
 RUN npm install -g pnpm
 RUN pnpm install
 
-# Copy source code
+# Copy source files
 COPY . .
 
-# Build application
+# Create a basic next.config.js if it doesn't exist
+RUN if [ ! -f next.config.js ]; then \
+    echo "module.exports = {output: 'standalone'}" > next.config.js; \
+    fi
+
+# Build the application
 RUN pnpm run build
 
 # Production stage
@@ -23,18 +28,12 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy necessary files from builder
-COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
 
 # Set environment variables
 ENV NODE_ENV=production
 
-# Get PORT from build arg
-ARG PORT=3000
-ENV PORT=${PORT}
-
-EXPOSE ${PORT}
-
-CMD ["sh", "-c", "node server.js"]
+# Start the application with dynamic port
+CMD ["sh", "-c", "PORT=${CLIENT_PORT:-3000} node server.js"]
