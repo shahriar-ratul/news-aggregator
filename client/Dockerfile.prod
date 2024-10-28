@@ -29,12 +29,8 @@ COPY --from=builder /app/public ./public
 
 # Set environment variables
 ENV NODE_ENV=production
-
-# Create a start script that sets the port
-RUN echo '#!/bin/sh\n\
-export PORT=${CLIENT_PORT:-5000}\n\
-exec node server.js' > /app/start.sh && \
-chmod +x /app/start.sh
+ENV PORT=5000
+ENV CLIENT_PORT=5000
 
 # Start the application
-CMD ["/app/start.sh"]
+CMD ["node", "server.js"]
