@@ -6,10 +6,12 @@ import { FeedsService } from './feeds.service';
 export class FeedsController {
   constructor(private readonly feedsService: FeedsService) {}
 
-  @Get()
-  findAll() {
-    return this.feedsService.getFeeds();
+
+  @Get('fetch')
+  fetchNewFeeds() {
+    return this.feedsService.getFeedsFromSource();
   }
+
 
 
 

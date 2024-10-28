@@ -7,5 +7,6 @@ import { HttpModule } from '@nestjs/axios';
   imports: [HttpModule],
   controllers: [FeedsController],
   providers: [FeedsService],
+  exports: [FeedsService]
 })
 export class FeedsModule {}

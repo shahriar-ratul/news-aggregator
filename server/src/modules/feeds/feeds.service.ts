@@ -25,13 +25,11 @@ export class FeedsService {
     },
   });
 
-
-
   constructor(
     private readonly _prisma: PrismaService,
   ) { }
 
-  async getFeeds() {
+  async getFeedsFromSource() {
     try {
       const promises = feedUrls.map(async (feedUrl) => {
         const feeds = await this.getFeedsFromUrl(feedUrl);
