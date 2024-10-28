@@ -52,5 +52,8 @@ RUN pnpm add prisma
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
 
+# Generate Prisma client in production
+RUN npx prisma generate
+
 # Run migrations and start the application
 CMD ["/app/wait-for-it.sh", "postgres", "sh", "-c", "npx prisma migrate deploy && node dist/main"]
