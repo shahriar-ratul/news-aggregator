@@ -23,10 +23,11 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.prod
+      args:
+        - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/news_api?schema=public
     environment:
       - NODE_ENV=production
       - PORT=${PORT:-4000}
-      # Update DATABASE_URL to use the correct host and port
       - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/news_api?schema=public
     ports:
       - "${API_PORT:-4000}:4000"
