@@ -17,9 +17,8 @@ COPY . .
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
 
-# Generate Prisma client
-RUN npx prisma generate && \
-    npx prisma migrate deploy
+# Only generate Prisma client during build
+RUN npx prisma generate
 
 RUN chmod -R 777 /app/prisma
 
@@ -46,4 +45,5 @@ EXPOSE 4000
 COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
+# Migrations and start will happen at runtime
 CMD ["/wait-for-it.sh", "postgres", "sh", "-c", "npx prisma migrate deploy && npm start"]
