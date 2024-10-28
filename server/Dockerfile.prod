@@ -38,7 +38,7 @@ RUN pnpm install --prod
 
 # Copy built application and necessary files
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/.pnpm/@prisma+client* ./node_modules/.pnpm/@prisma+client
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY prisma ./prisma
 COPY wait-for-it.sh ./wait-for-it.sh
