@@ -61,7 +61,8 @@ export default function PostTable() {
     const adjustedPage = page === 0 ? 1 : page;
 
     // base url
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "localhost:4000";
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BACKEND_URL || "http://65.0.204.1:4000";
 
     axios.defaults.baseURL = baseUrl;
 
