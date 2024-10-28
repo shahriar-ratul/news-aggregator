@@ -14,11 +14,6 @@ RUN pnpm install
 # Copy source files
 COPY . .
 
-# Create a basic next.config.js if it doesn't exist
-RUN if [ ! -f next.config.js ]; then \
-    echo "module.exports = {output: 'standalone'}" > next.config.js; \
-    fi
-
 # Build the application
 RUN pnpm run build
 
@@ -34,6 +29,7 @@ COPY --from=builder /app/public ./public
 
 # Set environment variables
 ENV NODE_ENV=production
+ENV PORT=${CLIENT_PORT:-3000}
 
-# Start the application with dynamic port
+# Start the application
 CMD ["sh", "-c", "PORT=${CLIENT_PORT:-3000} node server.js"]
