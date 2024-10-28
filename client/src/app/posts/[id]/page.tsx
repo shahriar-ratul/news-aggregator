@@ -1,11 +1,8 @@
-"use client";
 import DetailsPost from "@/modules/posts/post-details/DetailsPost";
-import React from "react";
 
-export default function DetailsAdminPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  return <DetailsPost id={params.id} />;
+type Params = Promise<{ id: string }>;
+
+export default async function DetailsPostPage({ params }: { params: Params }) {
+  const { id } = await params;
+  return <DetailsPost id={id} />;
 }

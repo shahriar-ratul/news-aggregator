@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import Loader from "@/components/loader/Loader";
 import { type PostModel } from "@/schema/PostSchema";
 import { useQuery } from "@tanstack/react-query";
