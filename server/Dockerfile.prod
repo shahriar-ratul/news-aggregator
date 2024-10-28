@@ -17,6 +17,11 @@ COPY . .
 # Generate Prisma client
 RUN npx prisma generate
 
+RUN chmod -R 777 /app/prisma
+
+RUN npx prisma generate && \
+    npx prisma migrate deploy
+
 # Build application
 RUN pnpm build
 

@@ -6,6 +6,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.prod
+      args:
+        - NODE_ENV=production
     environment:
       - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://localhost:4000}
     ports:
@@ -24,33 +26,37 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=${PORT:-4000}
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-news_api}?schema=public
+      # Update DATABASE_URL to use the correct host and port
+      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/news_api?schema=public
     ports:
       - "${API_PORT:-4000}:4000"
-    command: sh -c "npx prisma generate --schema=/app/prisma/schema.prisma && npx prisma migrate deploy --schema=/app/prisma/schema.prisma"
+    volumes:
+      - ./server/prisma:/app/prisma 
     networks:
       - app-network
       - postgres-network
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
 
   postgres:
     container_name: postgres_container
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-news_api}
-      PGDATA: /var/lib/postgresql/data/pgdata
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=news_api
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "5435:5432"
     networks:
       - postgres-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
