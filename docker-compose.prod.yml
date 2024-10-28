@@ -8,10 +8,13 @@ services:
       dockerfile: Dockerfile.prod
       args:
         - NODE_ENV=production
+        - PORT=${CLIENT_PORT:-3000}
     environment:
+      - NODE_ENV=production
+      - PORT=${CLIENT_PORT:-3000}
       - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://localhost:4000}
     ports:
-      - "${CLIENT_PORT:-3000}:3000"
+      - "${CLIENT_PORT:-3000}:${CLIENT_PORT:-3000}"
     networks:
       - app-network
     depends_on:
