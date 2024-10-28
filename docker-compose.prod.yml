@@ -10,7 +10,7 @@ services:
       - NODE_ENV=production
       - CLIENT_PORT=${CLIENT_PORT:-5000}
       - PORT=${CLIENT_PORT:-5000}
-      - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://localhost:4000}
+      - NEXT_PUBLIC_BACKEND_URL=http://api:4000
     ports:
       - "${CLIENT_PORT:-5000}:${CLIENT_PORT:-5000}"
     networks:
