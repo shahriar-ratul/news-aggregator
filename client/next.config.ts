@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  /* config options here */
+  server: {
+    port: process.env.CLIENT_PORT || 3000,
+  },
 };
 
 export default nextConfig;
