@@ -24,11 +24,12 @@ services:
       context: ./server
       dockerfile: Dockerfile.prod
       args:
-        - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/news_api?schema=public
+        - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/news_api?schema=public
     environment:
       - NODE_ENV=production
       - PORT=${PORT:-4000}
-      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/news_api?schema=public
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/news_api?schema=public
+      - POSTGRES_PASSWORD=postgres
     ports:
       - "${API_PORT:-4000}:4000"
     volumes:
@@ -37,8 +38,8 @@ services:
       - app-network
       - postgres-network
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
+    command: sh -c "npx prisma migrate deploy && npm start"
     restart: unless-stopped
 
   postgres:
