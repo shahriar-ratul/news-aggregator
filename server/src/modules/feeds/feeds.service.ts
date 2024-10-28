@@ -139,4 +139,11 @@ export class FeedsService {
   private getRandomUserAgent(): string {
     return this.userAgents[Math.floor(Math.random() * this.userAgents.length)];
   }
+
+
+  async getAllSources() {
+    return this._prisma.url.findMany();
+  }
+
+
 }

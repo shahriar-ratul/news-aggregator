@@ -75,4 +75,10 @@ export class PageOptionsDto {
     get skip(): number {
         return (this.page - 1) * this.limit;
     }
+
+
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    readonly source?: string[];
 }
