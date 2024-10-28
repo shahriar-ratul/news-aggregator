@@ -44,6 +44,9 @@ COPY prisma ./prisma
 COPY wait-for-it.sh ./wait-for-it.sh
 RUN chmod +x /app/wait-for-it.sh
 
+# Install prisma as a production dependency
+RUN pnpm add prisma
+
 # Set environment variables
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
